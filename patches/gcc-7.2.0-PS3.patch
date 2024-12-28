@@ -1,8 +1,7 @@
-diff --git a/Makefile.in b/Makefile.in
-index b824e0a0c..5bf0da25e 100644
---- a/Makefile.in
-+++ b/Makefile.in
-@@ -25734,7 +25734,6 @@ check-libiberty:
+diff --color -rupN gcc-7.2.0-old/Makefile.in gcc-7.2.0/Makefile.in
+--- gcc-7.2.0-old/Makefile.in	2024-12-28 18:57:16
++++ gcc-7.2.0/Makefile.in	2024-12-28 18:57:33
+@@ -25734,7 +25734,6 @@ maybe-install-libiberty:
  .PHONY: install-libiberty maybe-install-libiberty
  maybe-install-libiberty:
  @if libiberty
@@ -10,31 +9,9 @@ index b824e0a0c..5bf0da25e 100644
  
  install-libiberty: installdirs
  	@: $(MAKE); $(unstage)
-diff --git a/gcc/config.gcc b/gcc/config.gcc
-index a9196cd26..f2a94403d 100644
---- a/gcc/config.gcc
-+++ b/gcc/config.gcc
-@@ -2330,6 +2330,15 @@ pdp11-*-*)
- #	tmake_file="${tmake_file} rs6000/t-fprules"
- #	extra_headers=
- #	;;
-+powerpc64-ps3-elf)
-+	tm_file="${tm_file} dbxelf.h elfos.h usegas.h freebsd-spec.h newlib-stdint.h rs6000/sysv4.h rs6000/default64.h"
-+	tm_file="rs6000/biarch64.h ${tm_file} rs6000/cell64lv2.h"
-+	if test x${enable_secureplt} = xyes; then
-+		tm_file="rs6000/secureplt.h ${tm_file}"
-+	fi
-+	extra_options="${extra_options} rs6000/sysv4.opt"
-+	tmake_file="rs6000/t-fprules rs6000/t-fprules-fpbit rs6000/t-ppcgas rs6000/t-ppccomm"
-+	;;
- powerpc-*-darwin*)
- 	extra_options="${extra_options} rs6000/darwin.opt"
- 	case ${target} in
-diff --git a/gcc/config/rs6000/cell64lv2.h b/gcc/config/rs6000/cell64lv2.h
-new file mode 100644
-index 000000000..86da868b5
---- /dev/null
-+++ b/gcc/config/rs6000/cell64lv2.h
+diff --color -rupN gcc-7.2.0-old/gcc/config/rs6000/cell64lv2.h gcc-7.2.0/gcc/config/rs6000/cell64lv2.h
+--- gcc-7.2.0-old/gcc/config/rs6000/cell64lv2.h	1969-12-31 21:00:00
++++ gcc-7.2.0/gcc/config/rs6000/cell64lv2.h	2024-12-28 18:57:33
 @@ -0,0 +1,587 @@
 +/* Definitions of target machine for GNU compiler,
 +   for 64 bit PowerPC linux.
@@ -623,11 +600,10 @@ index 000000000..86da868b5
 +   enabling the __float128 keyword.  */
 +#undef	TARGET_FLOAT128_ENABLE_TYPE
 +#define TARGET_FLOAT128_ENABLE_TYPE 1
-diff --git a/gcc/config/rs6000/rs6000.c b/gcc/config/rs6000/rs6000.c
-index db9136f26..3a29d4723 100644
---- a/gcc/config/rs6000/rs6000.c
-+++ b/gcc/config/rs6000/rs6000.c
-@@ -1349,6 +1349,12 @@ rtl_opt_pass *make_pass_analyze_swaps (gcc::context*);
+diff --color -rupN gcc-7.2.0-old/gcc/config/rs6000/rs6000.c gcc-7.2.0/gcc/config/rs6000/rs6000.c
+--- gcc-7.2.0-old/gcc/config/rs6000/rs6000.c	2024-12-28 18:57:24
++++ gcc-7.2.0/gcc/config/rs6000/rs6000.c	2024-12-28 18:57:33
+@@ -1349,6 +1349,12 @@ static tree rs6000_fold_builtin (tree, int, tree *, bo
  static bool rs6000_keep_leaf_when_profiled () __attribute__ ((unused));
  static tree rs6000_fold_builtin (tree, int, tree *, bool);
  
@@ -640,7 +616,7 @@ index db9136f26..3a29d4723 100644
  /* Hash table stuff for keeping track of TOC entries.  */
  
  struct GTY((for_user)) toc_hash_struct
-@@ -43333,7 +43339,19 @@ rs6000_optab_supported_p (int op, machine_mode mode1, machine_mode,
+@@ -43333,7 +43339,19 @@ rs6000_optab_supported_p (int op, machine_mode mode1, 
        return true;
      }
  }
@@ -661,11 +637,43 @@ index db9136f26..3a29d4723 100644
  struct gcc_target targetm = TARGET_INITIALIZER;
  
  #include "gt-rs6000.h"
-diff --git a/gcc/configure b/gcc/configure
-index 50ccc2a0f..6b503988a 100755
---- a/gcc/configure
-+++ b/gcc/configure
-@@ -28598,12 +28598,12 @@ $as_echo "#define HAVE_LD_PPC_GNU_ATTR_LONG_DOUBLE 1" >>confdefs.h
+diff --color -rupN gcc-7.2.0-old/gcc/config.gcc gcc-7.2.0/gcc/config.gcc
+--- gcc-7.2.0-old/gcc/config.gcc	2024-12-28 18:57:24
++++ gcc-7.2.0/gcc/config.gcc	2024-12-28 18:57:33
+@@ -2330,6 +2330,15 @@ pdp11-*-*)
+ #	tmake_file="${tmake_file} rs6000/t-fprules"
+ #	extra_headers=
+ #	;;
++powerpc64-ps3-elf)
++	tm_file="${tm_file} dbxelf.h elfos.h usegas.h freebsd-spec.h newlib-stdint.h rs6000/sysv4.h rs6000/default64.h"
++	tm_file="rs6000/biarch64.h ${tm_file} rs6000/cell64lv2.h"
++	if test x${enable_secureplt} = xyes; then
++		tm_file="rs6000/secureplt.h ${tm_file}"
++	fi
++	extra_options="${extra_options} rs6000/sysv4.opt"
++	tmake_file="rs6000/t-fprules rs6000/t-fprules-fpbit rs6000/t-ppcgas rs6000/t-ppccomm"
++	;;
+ powerpc-*-darwin*)
+ 	extra_options="${extra_options} rs6000/darwin.opt"
+ 	case ${target} in
+diff --color -rupN gcc-7.2.0-old/gcc/config.host gcc-7.2.0/gcc/config.host
+--- gcc-7.2.0-old/gcc/config.host	2024-12-28 18:57:24
++++ gcc-7.2.0/gcc/config.host	2024-12-28 18:59:13
+@@ -93,8 +93,8 @@ case ${host} in
+ case ${host} in
+   *-darwin*)
+     # Generic darwin host support.
+-    out_host_hook_obj=host-darwin.o
+-    host_xmake_file="${host_xmake_file} x-darwin"
++    #out_host_hook_obj=host-darwin.o
++    #host_xmake_file="${host_xmake_file} x-darwin"
+     ;;
+ esac
+ 
+diff --color -rupN gcc-7.2.0-old/gcc/configure gcc-7.2.0/gcc/configure
+--- gcc-7.2.0-old/gcc/configure	2024-12-28 18:57:17
++++ gcc-7.2.0/gcc/configure	2024-12-28 18:57:33
+@@ -28598,12 +28598,12 @@ case "$target:$tm_file" in
  esac
  
  case "$target:$tm_file" in
@@ -680,11 +688,10 @@ index 50ccc2a0f..6b503988a 100755
       emul_name="-melf64ppc"
        ;;
       *-*-freebsd*)
-diff --git a/gcc/configure.ac b/gcc/configure.ac
-index 1d5a9d7c6..e568cb3f8 100644
---- a/gcc/configure.ac
-+++ b/gcc/configure.ac
-@@ -5462,12 +5462,12 @@ EOF
+diff --color -rupN gcc-7.2.0-old/gcc/configure.ac gcc-7.2.0/gcc/configure.ac
+--- gcc-7.2.0-old/gcc/configure.ac	2024-12-28 18:57:24
++++ gcc-7.2.0/gcc/configure.ac	2024-12-28 18:57:33
+@@ -5462,12 +5462,12 @@ case "$target:$tm_file" in
  esac
  
  case "$target:$tm_file" in
@@ -699,11 +706,10 @@ index 1d5a9d7c6..e568cb3f8 100644
       emul_name="-melf64ppc"
        ;;
       *-*-freebsd*)
-diff --git a/libcpp/lex.c b/libcpp/lex.c
-index 9edd2a6af..15585ff93 100644
---- a/libcpp/lex.c
-+++ b/libcpp/lex.c
-@@ -568,7 +568,7 @@ search_line_fast (const uchar *s, const uchar *end ATTRIBUTE_UNUSED)
+diff --color -rupN gcc-7.2.0-old/libcpp/lex.c gcc-7.2.0/libcpp/lex.c
+--- gcc-7.2.0-old/libcpp/lex.c	2024-12-28 18:57:25
++++ gcc-7.2.0/libcpp/lex.c	2024-12-28 18:57:33
+@@ -568,7 +568,7 @@ search_line_fast (const uchar *s, const uchar *end ATT
      {
        vc m_nl, m_cr, m_bs, m_qm;
  
@@ -712,10 +718,9 @@ index 9edd2a6af..15585ff93 100644
        s += 16;
  
        m_nl = (vc) __builtin_vec_cmpeq(data, repl_nl);
-diff --git a/libgcc/config.host b/libgcc/config.host
-index bedcf1017..8d6c8feff 100644
---- a/libgcc/config.host
-+++ b/libgcc/config.host
+diff --color -rupN gcc-7.2.0-old/libgcc/config.host gcc-7.2.0/libgcc/config.host
+--- gcc-7.2.0-old/libgcc/config.host	2024-12-28 18:57:17
++++ gcc-7.2.0/libgcc/config.host	2024-12-28 18:57:33
 @@ -1043,6 +1043,8 @@ powerpc-*-rtems*)
  	tmake_file="${tmake_file} rs6000/t-ppccomm rs6000/t-savresfgpr rs6000/t-crtstuff t-crtstuff-pic t-fdpbit"
  	extra_parts="$extra_parts crtbeginS.o crtendS.o crtbeginT.o ecrti.o ecrtn.o ncrti.o ncrtn.o"
